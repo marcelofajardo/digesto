@@ -14,13 +14,13 @@ class Document extends Model
         'titulo', 
         'descripcion', 
         'archivo_pdf', 
-        'tipo_id', 
-        'categoria_id',
+        'type_id', 
+        'category_id',
         'user_id'
     ];
     public function type()
     {
-        return $this->belongsTo(Type::class, 'tipo_id');
+        return $this->belongsTo(Type::class, 'type_id');
     }
     public function user()
     {
@@ -28,7 +28,7 @@ class Document extends Model
     }
     public function category()
     {
-        return $this->belongsTo(Category::class, 'categoria_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
 }
