@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Grid;
@@ -27,6 +28,10 @@ class DocumentResource extends Resource
     protected static ?string $model = Document::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 
     public static function form(Form $form): Form
     {
@@ -90,20 +95,27 @@ class DocumentResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('anio')
-                    ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Año')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('numero')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Número'),
                 Tables\Columns\TextColumn::make('titulo')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Título'),
                 Tables\Columns\TextColumn::make('archivo_pdf')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Archivo'),
 
-                Tables\Columns\TextColumn::make('type.nombre')->sortable(),
-                Tables\Columns\TextColumn::make('category.nombre')->sortable(),
+                Tables\Columns\TextColumn::make('type.nombre')
+                ->sortable()
+                ->label('Tipo'),
+                Tables\Columns\TextColumn::make('category.nombre')
+                ->sortable()->label('Escuela'),
                 Tables\Columns\TextColumn::make('user.name')
-
+                    ->label('Usuario')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -118,8 +130,23 @@ class DocumentResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+             ->defaultSort(function (Builder $query): Builder {
+                return $query
+                    ->orderBy('anio','desc')
+                    ->orderBy('numero','desc');
+            })
             ->filters([
-                //
+                /* Filter::make('Año')
+                    ->form([
+                        Forms\Components\TextInput::make('anio')
+                            ->numeric()
+                            ->minValue(2008)
+                            ->maxValue(2045)
+                            ->default(date('Y'))
+                            ->placeholder('Año')
+                    ])
+                    ->query(fn (Builder $query, array $data): Builder => $query->where('anio', $data['anio'] ?? date('Y'))),
+ */
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
