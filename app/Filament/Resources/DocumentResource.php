@@ -31,11 +31,8 @@ class DocumentResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+
             ->schema([
-/*                 Grid::make([
-                    'sm' => 2,
-                    'xl' => 6,
-                ]), */
                 Fieldset::make()
                 ->schema([
                         Forms\Components\TextInput::make('anio')
@@ -44,13 +41,15 @@ class DocumentResource extends Resource
                             ->minValue(2008)
                             ->maxValue(2045)
                             ->default(date('Y'))
-                            ->placeholder('Año')->columnSpan(2),
+                            ->placeholder('Año')
+                            ->columnSpan(2),
                         Forms\Components\TextInput::make('numero')
                             ->required()
                             ->numeric()
                             ->minValue(1)
                             ->maxValue(9999)
-                            ->placeholder('Número')->columnSpan(2),
+                            ->placeholder('Número')
+                            ->columnSpan(2),
                         Forms\Components\TextInput::make('titulo')
                             ->required()
                             ->maxLength(255)->columnSpan(8),
