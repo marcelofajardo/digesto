@@ -14,13 +14,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Card;
-use Filament\Forms\Components\Fieldset;
-use Filament\Tables\Actions;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\ForceDeleteBulkAction;
-use Filament\Tables\Actions\RestoreBulkAction;
-use Filament\Tables\Actions\BulkActionGroup;
 
 class DocumentResource extends Resource
 {
@@ -32,42 +25,30 @@ class DocumentResource extends Resource
     {
         return $form
             ->schema([
-/*                 Grid::make([
+                Grid::make([
                     'sm' => 2,
                     'xl' => 6,
-                ]), */
-                Fieldset::make()
-                ->schema([
+                ])
+                    ->schema([
                         Forms\Components\TextInput::make('anio')
                             ->required()
                             ->numeric()
                             ->minValue(2008)
                             ->maxValue(2045)
                             ->default(date('Y'))
-                            ->placeholder('Año')->columnSpan(2),
+                            ->placeholder('Año'),
                         Forms\Components\TextInput::make('numero')
                             ->required()
                             ->numeric()
                             ->minValue(1)
                             ->maxValue(9999)
-                            ->placeholder('Número')->columnSpan(2),
+                            ->placeholder('Número'),
                         Forms\Components\TextInput::make('titulo')
                             ->required()
-                            ->maxLength(255)->columnSpan(8),
-
-                ])->columns(12),
-
-                Fieldset::make()
-                ->schema([
-
+                            ->maxLength(255),
                         Forms\Components\Textarea::make('descripcion')
                             ->required()
                             ->columnSpanFull(),
-
-                ]),
-                Fieldset::make()
-                ->schema([
-
                         Forms\Components\FileUpload::make('archivo_pdf')
                             ->required(true)
                             ->placeholder('Archivo PDF')
@@ -82,7 +63,7 @@ class DocumentResource extends Resource
                             ->placeholder('Categoría'),
                         Hidden::make('user_id')
                             ->default(auth()->user()->id)
-                ])->columns(3),
+                    ])
             ]);
     }
 

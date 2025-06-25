@@ -11,10 +11,12 @@ class Document extends Model
     use SoftDeletes, HasFactory;
 
     protected $fillable = [
-        'titulo', 
-        'descripcion', 
-        'archivo_pdf', 
-        'type_id', 
+        'anio',
+        'numero',
+        'titulo',
+        'descripcion',
+        'archivo_pdf',
+        'type_id',
         'category_id',
         'user_id'
     ];

@@ -17,22 +17,22 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
-        $data =[
+        /*$data =[
             [
-                'name' => 'Admin', 
+                'name' => 'Admin',
                 'email' => 'admin@gmail.com',
                 'password' => bcrypt('sistemas')
             ],
             [
-                'name' => 'Usuario1', 
+                'name' => 'Usuario1',
                 'email' => 'usuario1@gmail.com',
                 'password' => bcrypt('sistemas')
             ]
         ];
         DB::table('users')->insert($data);
-        
-        User::factory(10)->create();
 
+        User::factory(10)->create();
+*/
         $this->call([
             CategoriasSeeder::class,
             TiposSeeder::class,

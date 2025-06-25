@@ -12,6 +12,8 @@ return new class extends Migration
             $table->id();
             $table->string('titulo');
             $table->text('descripcion');
+            $table->unsignedSmallInteger('anio');
+            $table->unsignedSmallInteger('numero');
             $table->string('archivo_pdf');
             $table->foreignId('type_id')->constrained('types');
             $table->foreignId('category_id')->constrained('categories');
@@ -19,5 +21,9 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+    }
+    public function down(): void
+    {
+        Schema::dropIfExists('documents');
     }
 };

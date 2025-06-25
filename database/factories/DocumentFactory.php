@@ -16,10 +16,10 @@ class DocumentFactory extends Factory
         return [
             'Titulo' => $this->faker->text(25),
             'Descripcion' =>$this->faker->text(100),
-            //'year' =>$this->faker->numberBetween(2010 , 2022),
-            //'Numero' =>$this->faker->numberBetween(1,150),
+            'anio' =>$this->faker->numberBetween(2008 , 2025),
+            'numero' =>$this->faker->numberBetween(1,150),
             'archivo_pdf' => $this->faker->numberBetween(1,11) . '.pdf',
-            //'user_id' => $this->faker->numberBetween(1,12),
+            'user_id' => $this->faker->numberBetween(1,2),
             'category_id' => $this->faker->numberBetween(1,4),
             'type_id' => $this->faker->numberBetween(1,3),
         ];
