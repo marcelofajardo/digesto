@@ -16,8 +16,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-        /*$data =[
+         \App\Models\User::factory(10)->create();
+        $data =[
             [
                 'name' => 'Admin',
                 'email' => 'admin@gmail.com',
@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
         DB::table('users')->insert($data);
 
         User::factory(10)->create();
-*/
+
         $this->call([
             CategoriasSeeder::class,
             TiposSeeder::class,
