@@ -77,18 +77,27 @@ class DocumentResource extends Resource
                         Forms\Components\FileUpload::make('archivo_pdf')
                             ->required(true)
                             ->placeholder('Archivo PDF')
-                            ->preservefilenames(),
+                            ->preservefilenames()->columnSpan(4),
                         Forms\Components\Select::make('type_id')
                             ->relationship('type', 'Nombre')
                             ->required(true)
-                            ->placeholder('Tipo de Documento'),
+                            ->placeholder('Tipo de Documento')->columnSpan(2),
                         Forms\Components\Select::make('category_id')
                             ->relationship('category', 'Nombre')
                             ->required(true)
-                            ->placeholder('Categoría'),
+                            ->placeholder('Categoría')->columnSpan(2),
+                        Forms\Components\Select::make('department_id')
+                            ->relationship('department', 'Nombre')
+                            ->required(true)
+                            ->placeholder('Departamento')->columnSpan(2),
+                        Forms\Components\Select::make('tags')
+                            ->multiple()
+                            ->preload()
+                            ->relationship('tags', 'name')
+                            ->placeholder('Etiquetas')->columnSpan(2),
                         Hidden::make('user_id')
                             ->default(auth()->user()->id)
-                ])->columns(3),
+                ])->columns(12),
             ]);
     }
 

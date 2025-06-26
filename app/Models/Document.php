@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Tags\HasTags;
+
 
 class Document extends Model
 {
-    use SoftDeletes, HasFactory;
+    use SoftDeletes, HasFactory, HasTags;
 
     protected $fillable = [
         'anio',
@@ -18,7 +20,8 @@ class Document extends Model
         'archivo_pdf',
         'type_id',
         'category_id',
-        'user_id'
+        'user_id',
+        'department_id'
     ];
     public function type()
     {
@@ -32,5 +35,18 @@ class Document extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
-
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id');
+    }
+    /* public function tags()
+    {
+        return $this->morphToMany(
+            'tag',
+            'taggable',
+            'taggables',
+            'tag_id',
+            'taggable_id'
+        );
+    } */
 }
