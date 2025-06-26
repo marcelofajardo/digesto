@@ -13,7 +13,13 @@ class ListDocuments extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->label('Nuevo Documento')
+                ->icon('heroicon-o-plus')
+                ->color('primary'),
         ];
+    }
+    public function getTitle(): string
+    {
+        return 'Documentos';
     }
 }

@@ -13,7 +13,13 @@ class ListTypes extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->label('Nuevo Tipo de Documento')
+                ->icon('heroicon-o-plus')
+                ->color('primary'),
         ];
+    }
+    public function getTitle(): string
+    {
+        return 'Tipos de Documentos';
     }
 }

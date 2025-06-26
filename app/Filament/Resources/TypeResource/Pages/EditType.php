@@ -13,7 +13,16 @@ class EditType extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->label('Eliminar Tipo de Documento')
+                ->icon('heroicon-o-trash')
+                ->color('danger')
+                ->requiresConfirmation()
+                ->successNotificationTitle('Tipo de Documento eliminado correctamente'),
         ];
+    }
+    public function getTitle(): string
+    {
+        return 'Editar Tipos de Documentos';
     }
 }

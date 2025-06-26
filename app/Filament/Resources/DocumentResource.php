@@ -28,6 +28,8 @@ class DocumentResource extends Resource
     protected static ?string $model = Document::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel  = 'Documentos';
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
