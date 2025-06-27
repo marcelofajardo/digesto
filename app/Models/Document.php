@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\Tags\HasTags;
-
+//use Spatie\Tags\Tags;
 
 class Document extends Model
 {
@@ -39,14 +40,13 @@ class Document extends Model
     {
         return $this->belongsTo(Department::class, 'department_id');
     }
-    /* public function tags()
+
+    /* public function tags() : MorphToMany
     {
         return $this->morphToMany(
-            'tag',
+            'tags',
             'taggable',
-            'taggables',
-            'tag_id',
-            'taggable_id'
+
         );
     } */
 }

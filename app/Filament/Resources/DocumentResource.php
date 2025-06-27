@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\DocumentResource\Pages;
 use App\Filament\Resources\DocumentResource\RelationManagers;
+use App\Models\Department;
 use App\Models\Document;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -22,6 +23,9 @@ use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\ForceDeleteBulkAction;
 use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\SelectFilter;
+
 
 class DocumentResource extends Resource
 {
@@ -77,7 +81,7 @@ class DocumentResource extends Resource
                         Forms\Components\FileUpload::make('archivo_pdf')
                             ->required(true)
                             ->placeholder('Archivo PDF')
-                            ->preservefilenames()->columnSpan(4),
+                            ->preservefilenames()->columnSpan(5),
                         Forms\Components\Select::make('type_id')
                             ->relationship('type', 'Nombre')
                             ->required(true)
@@ -85,16 +89,18 @@ class DocumentResource extends Resource
                         Forms\Components\Select::make('category_id')
                             ->relationship('category', 'Nombre')
                             ->required(true)
-                            ->placeholder('Categoría')->columnSpan(2),
+                            ->placeholder('Categoría')->columnSpan(3),
                         Forms\Components\Select::make('department_id')
                             ->relationship('department', 'Nombre')
                             ->required(true)
                             ->placeholder('Departamento')->columnSpan(2),
-                        Forms\Components\Select::make('tags')
+                        /* Forms\Components\Select::make('tags')
                             ->multiple()
                             ->preload()
                             ->relationship('tags', 'name')
-                            ->placeholder('Etiquetas')->columnSpan(2),
+                            ->placeholder('Etiquetas')->columnSpan(12), */
+                        Forms\Components\SpatieTagsInput::make('tags')->columnSpan(12),
+
                         Hidden::make('user_id')
                             ->default(auth()->user()->id)
                 ])->columns(12),
@@ -128,6 +134,18 @@ class DocumentResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Usuario')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('department.nombre')
+                    ->label('Departamento'),
+                Tables\Columns\SpatieTagsColumn::make('tags')
+
+                    ->searchable(
+                    query: function (Builder $query, string $search): Builder {
+                        return $query->whereHas('tags', function (Builder $query) use ($search) {
+                            $query->where('name', 'like', "%{$search}%");
+                        });
+                    }
+                )
+                ->label('Tags'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -158,6 +176,7 @@ class DocumentResource extends Resource
                     ])
                     ->query(fn (Builder $query, array $data): Builder => $query->where('anio', $data['anio'] ?? date('Y'))),
  */
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
