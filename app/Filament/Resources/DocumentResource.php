@@ -24,13 +24,13 @@ use Filament\Tables\Actions\ForceDeleteBulkAction;
 use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\SelectFilter;
+use Filament\Tables\Filters\SelectFilter;
 
 
 class DocumentResource extends Resource
 {
     protected static ?string $model = Document::class;
-
+   
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel  = 'Documentos';
 
@@ -138,13 +138,13 @@ class DocumentResource extends Resource
                     ->label('Departamento'),
                 Tables\Columns\SpatieTagsColumn::make('tags')
 
-                    ->searchable(
+                   /*  ->searchable(
                     query: function (Builder $query, string $search): Builder {
                         return $query->whereHas('tags', function (Builder $query) use ($search) {
                             $query->where('name', 'like', "%{$search}%");
                         });
                     }
-                )
+                ) */
                 ->label('Tags'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -176,7 +176,10 @@ class DocumentResource extends Resource
                     ])
                     ->query(fn (Builder $query, array $data): Builder => $query->where('anio', $data['anio'] ?? date('Y'))),
  */
-
+            SelectFilter::make('tags')
+                ->relationship('tags', 'name')
+                ->searchable()
+                ->preload()->multiple()
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
