@@ -15,6 +15,8 @@ class DepartmentSeeder extends Seeder
     {
         $data = [
         ['nombre' => 'Rectorado'],
+        ['nombre' => 'Académica'],
+        ['nombre' => 'Extensión'],
 
         ];
         DB::table('departments')->insert($data);

@@ -14,11 +14,12 @@ class CategoriasSeeder extends Seeder
      */
     public function run()
     {
-        $data = [ 
-        ['nombre' => 'Académica'],
-        ['nombre' => 'Extensión'],
-        ['nombre' => 'Administrativa'],
-        ['nombre' => 'Rectoría']
+        $data = [
+        ['nombre' => 'Ingeniería'],
+        ['nombre' => 'Economía'],
+        ['nombre' => 'Salud'],
+        ['nombre' => 'Educación'],
+        ['nombre' => 'Posgrado']
         ];
         DB::table('categories')->insert($data);
     }

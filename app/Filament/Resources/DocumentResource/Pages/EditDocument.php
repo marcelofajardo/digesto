@@ -20,4 +20,8 @@ class EditDocument extends EditRecord
             ->modalHeading('Confirmar Eliminación del Documento')
        ];
     }
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

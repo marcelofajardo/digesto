@@ -101,12 +101,13 @@ class DocumentResource extends Resource
                             ->relationship('tags', 'name')
                             ->placeholder('Etiquetas')->columnSpan(12), */
                         Forms\Components\SpatieTagsInput::make('tags')
-                        ->separator(',')
-                        ->splitKeys(['Tab', ' '])
-                        ->columnSpan(12),
-
+                            ->separator(',')
+                            ->splitKeys(['Tab', ' '])
+                            ->columnSpan(12),
                         Hidden::make('user_id')
-                            ->default(auth()->user()->id)
+                            ->default(fn () => auth()->id()), // opcional
+                        /* Hidden::make('user_id')
+                            ->default(auth()->user()->id) */
                 ])->columns(12),
             ]);
     }
@@ -232,4 +233,5 @@ class DocumentResource extends Resource
             'edit' => Pages\EditDocument::route('/{record}/edit'),
         ];
     }
+
 }

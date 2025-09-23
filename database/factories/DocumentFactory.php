@@ -20,8 +20,8 @@ class DocumentFactory extends Factory
             'numero' =>$this->faker->numberBetween(1,150),
             'archivo_pdf' => $this->faker->numberBetween(1,11) . '.pdf',
             'user_id' => $this->faker->numberBetween(1,2),
-            'category_id' => $this->faker->numberBetween(1,4),
-            'department_id' => $this->faker->numberBetween(1,1),
+            'category_id' => $this->faker->numberBetween(1,5),
+            'department_id' => $this->faker->numberBetween(1,3),
             'type_id' => $this->faker->numberBetween(1,3),
         ];
     }
