@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Hidden;
+use Filament\Tables\Columns\IconColumn;
 
 class DocumentResource extends Resource
 {
@@ -80,8 +81,11 @@ class DocumentResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('titulo')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('archivo_pdf')
-                    ->searchable(),
+                //Tables\Columns\TextColumn::make('archivo_pdf')
+                Tables\Columns\IconColumn::make('archivo_pdf')
+                    ->searchable()
+                    ->icon('heroicon-s-check') // El icono a mostrar
+                    ->hiddenLabel(), // Oculta la etiqueta de texto
 
                 Tables\Columns\TextColumn::make('type.nombre')->sortable(),
                 Tables\Columns\TextColumn::make('category.nombre')->sortable(),

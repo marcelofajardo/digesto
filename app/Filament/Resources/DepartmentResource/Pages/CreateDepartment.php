@@ -9,4 +9,10 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateDepartment extends CreateRecord
 {
     protected static string $resource = DepartmentResource::class;
+
+    public function getTitle(): string
+    {
+        return 'Crear Escuela';
+    }
+
 }

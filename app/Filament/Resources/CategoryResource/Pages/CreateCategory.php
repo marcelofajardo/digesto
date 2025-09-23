@@ -9,4 +9,12 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateCategory extends CreateRecord
 {
     protected static string $resource = CategoryResource::class;
+
+
+    public function getTitle(): string
+    {
+        return 'Crear Categoria';
+    }
+
 }
+

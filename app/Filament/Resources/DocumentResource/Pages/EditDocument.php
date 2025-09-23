@@ -16,7 +16,8 @@ class EditDocument extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
-        ];
+            Actions\DeleteAction::make()->label('Borra Documento')
+            ->modalHeading('Confirmar Eliminación del Documento')
+       ];
     }
 }

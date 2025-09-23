@@ -25,13 +25,14 @@ use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
-
+use Filament\Tables\Columns\IconColumn;
+use Illuminate\Support\Facades\Storage;
 
 class DocumentResource extends Resource
 {
     protected static ?string $model = Document::class;
-   
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static ?string $navigationLabel  = 'Documentos';
 
     public static function getNavigationBadge(): ?string
@@ -99,7 +100,10 @@ class DocumentResource extends Resource
                             ->preload()
                             ->relationship('tags', 'name')
                             ->placeholder('Etiquetas')->columnSpan(12), */
-                        Forms\Components\SpatieTagsInput::make('tags')->columnSpan(12),
+                        Forms\Components\SpatieTagsInput::make('tags')
+                        ->separator(',')
+                        ->splitKeys(['Tab', ' '])
+                        ->columnSpan(12),
 
                         Hidden::make('user_id')
                             ->default(auth()->user()->id)
@@ -110,6 +114,7 @@ class DocumentResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('anio')
                     ->searchable()
@@ -122,20 +127,39 @@ class DocumentResource extends Resource
                 Tables\Columns\TextColumn::make('titulo')
                     ->searchable()
                     ->label('Título'),
-                Tables\Columns\TextColumn::make('archivo_pdf')
+                /* Tables\Columns\TextColumn::make('archivo_pdf')
                     ->searchable()
-                    ->label('Archivo'),
+                    ->label('Archivo'), */
+                /* Tables\Columns\IconColumn::make('archivo_pdf')
+                    ->searchable()
+                    ->label('Archivo')
+                    ->icon('heroicon-s-check'),  */
+                TextColumn::make('archivo_pdf')
+                    ->searchable()
+                    ->toggleable(false)   // evita que el usuario la muestre/oculte
+                    ->visible(false),     // no se muestra en la tabla pero sigue en la consulta
 
+                // 2) IconColumn para mostrar el icono PDF clickeable
+                IconColumn::make('archivo_pdf_icon') // nombre de columna arbitrario porque usamos getStateUsing
+                    ->label('Documento')
+                    ->getStateUsing(fn ($record) => filled($record->archivo_pdf)) // true si hay archivo
+                    ->trueIcon('heroicon-o-document') // icono cuando hay archivo
+                    ->falseIcon(null)              // nada si no hay archivo
+                    ->color('danger')              // color rojo
+                    ->url(fn ($record) => $record->archivo_pdf ? Storage::url($record->archivo_pdf) : null)
+                    ->openUrlInNewTab(),           // abrir en nueva pestaña
                 Tables\Columns\TextColumn::make('type.nombre')
                 ->sortable()
                 ->label('Tipo'),
                 Tables\Columns\TextColumn::make('category.nombre')
-                ->sortable()->label('Escuela'),
+                ->sortable()->label('Escuela')
+                ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Usuario')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('department.nombre')
-                    ->label('Departamento'),
+                    ->label('Departamento')->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\SpatieTagsColumn::make('tags')
 
                    /*  ->searchable(

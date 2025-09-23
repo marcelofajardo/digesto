@@ -18,7 +18,8 @@ class EditType extends EditRecord
                 ->icon('heroicon-o-trash')
                 ->color('danger')
                 ->requiresConfirmation()
-                ->successNotificationTitle('Tipo de Documento eliminado correctamente'),
+                ->successNotificationTitle('Tipo de Documento eliminado correctamente')
+                ->modalHeading('Confirmar Eliminación del Tipo de Documento'),
         ];
     }
     public function getTitle(): string

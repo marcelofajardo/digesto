@@ -18,38 +18,35 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class AdminPanelProvider extends PanelProvider
+class PublicoPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
-            ->id('admin')
-            ->path('admin')
-            ->login()
+            ->id('publico')
+            ->navigation(false) // 🔥 desactiva el sidebar completo
+            ->breadcrumbs(false) // 🔥 oculta breadcrumbs en todo el panel
+            ->path('')
+            //->login()
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => Color::Amber,
             ])
             ->brandName('Digesto UNViMe')
-            //->brandLogo(asset('images/logo.svg'))
-            ->sidebarCollapsibleOnDesktop()
-            ->sidebarWidth('15rem')
-            ->breadcrumbs(false)
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->discoverResources(in: app_path('Filament/Publico/Resources'), for: 'App\\Filament\\Publico\\Resources')
+            ->discoverPages(in: app_path('Filament/Publico/Pages'), for: 'App\\Filament\\Publico\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                //Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->discoverWidgets(in: app_path('Filament/Publico/Widgets'), for: 'App\\Filament\\Publico\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                //Widgets\FilamentInfoWidget::class,
+                /* Widgets\AccountWidget::class,
+                Widgets\FilamentInfoWidget::class, */
             ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
-                AuthenticateSession::class,
+                //AuthenticateSession::class,
                 ShareErrorsFromSession::class,
                 VerifyCsrfToken::class,
                 SubstituteBindings::class,
@@ -57,7 +54,7 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([
-                Authenticate::class,
+                //Authenticate::class,
             ]);
     }
 }

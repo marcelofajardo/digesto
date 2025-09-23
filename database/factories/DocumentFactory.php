@@ -21,6 +21,7 @@ class DocumentFactory extends Factory
             'archivo_pdf' => $this->faker->numberBetween(1,11) . '.pdf',
             'user_id' => $this->faker->numberBetween(1,2),
             'category_id' => $this->faker->numberBetween(1,4),
+            'department_id' => $this->faker->numberBetween(1,1),
             'type_id' => $this->faker->numberBetween(1,3),
         ];
     }

@@ -13,7 +13,12 @@ class EditCategory extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()->label('Borrar Categoría')
+            ->modalHeading('Confirmar Eliminación de la Categoría'),
         ];
+    }
+    public function getTitle(): string
+    {
+        return 'Editar Categoria';
     }
 }

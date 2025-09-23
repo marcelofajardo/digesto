@@ -13,7 +13,12 @@ class EditDepartment extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()->label('Borra Escuela')
+            ->modalHeading('Confirmar Eliminación de la Escuela'),
         ];
+    }
+    public function getTitle(): string
+    {
+        return 'Editar Escuela';
     }
 }
