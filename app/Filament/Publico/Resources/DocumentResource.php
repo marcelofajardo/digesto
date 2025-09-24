@@ -21,10 +21,7 @@ use App\Models\Category;
 use App\Models\Type;
 use App\Models\Department;
 use App\Models\User;
-
-
-
-
+use Filament\Tables\Actions;
 
 use Filament\Tables\Enums\FiltersLayout;
 
@@ -93,6 +90,7 @@ class DocumentResource extends Resource
             Tables\Columns\SpatieTagsColumn::make('tags')
                 ->label('Etiquetas'),
         ])
+
         ->filters([
             // Filtro por Tipo (SelectFilter)
                         /* Filter::make('anio')
@@ -149,8 +147,6 @@ class DocumentResource extends Resource
                 ->relationship('tags', 'name')
                 ->searchable()
                 ->preload()->multiple(),
-
-
             ]);
     }
 
