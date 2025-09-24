@@ -116,6 +116,8 @@ class DocumentResource extends Resource
     {
         return $table
         ->striped()
+        ->searchPlaceholder('Buscar por nombre o descripción')
+
             ->columns([
                 Tables\Columns\TextColumn::make('anio')
                     ->searchable()
@@ -179,10 +181,10 @@ class DocumentResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
+                /* Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true), */
             ])
              ->defaultSort(function (Builder $query): Builder {
                 return $query
@@ -209,6 +211,7 @@ class DocumentResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
+
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

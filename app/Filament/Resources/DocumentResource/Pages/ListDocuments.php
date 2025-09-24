@@ -36,4 +36,5 @@ class ListDocuments extends ListRecords
     {
         return 'Documentos';
     }
+
 }

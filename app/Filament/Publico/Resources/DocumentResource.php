@@ -26,7 +26,7 @@ use App\Models\User;
 
 
 
-use Filament\Tables\Enums\FiltersLayout; 
+use Filament\Tables\Enums\FiltersLayout;
 
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\TextInput;
@@ -53,6 +53,7 @@ class DocumentResource extends Resource
     return $table
         ->striped()
         ->filtersLayout(FiltersLayout::AboveContent)
+        ->searchPlaceholder('Buscar por nombre o descripción')
         ->columns([
             Tables\Columns\TextColumn::make('anio')
                 ->searchable()
@@ -94,7 +95,7 @@ class DocumentResource extends Resource
         ])
         ->filters([
             // Filtro por Tipo (SelectFilter)
-                        Filter::make('anio')
+                        /* Filter::make('anio')
                 ->label('Filtrar por Año')
                 ->form([
                     TextInput::make('anio')
@@ -102,11 +103,24 @@ class DocumentResource extends Resource
                         ->integer()
                         ->debounce(500), // Retraso para evitar consultas constantes
                 ])
+
                 ->query(function (Builder $query, array $data): Builder {
                     return $query->when(
                         $data['anio'],
                         fn (Builder $query, $anio): Builder => $query->where('anio', $anio)
                     );
+                }), */
+             SelectFilter::make('anio')
+                ->label('Año')
+                ->multiple() // permite seleccionar varios
+                ->options(function () {
+                    // Trae los años existentes en la tabla
+                    return \App\Models\Document::query()
+                        ->select('anio')
+                        ->distinct()
+                        ->orderBy('anio', 'desc')
+                        ->pluck('anio', 'anio')
+                        ->toArray();
                 }),
             SelectFilter::make('type_id')
                 ->label('Filtrar por Tipo')
@@ -135,8 +149,9 @@ class DocumentResource extends Resource
                 ->relationship('tags', 'name')
                 ->searchable()
                 ->preload()->multiple(),
-            
-        ]);
+
+
+            ]);
     }
 
     public static function getRelations(): array
