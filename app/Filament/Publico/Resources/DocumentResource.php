@@ -27,7 +27,9 @@ use Filament\Tables\Enums\FiltersLayout;
 
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\TextInput;
-
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\Layout\Panel;
+use Filament\Tables\Columns\Layout\Split;
 
 class DocumentResource extends Resource
 {
@@ -51,6 +53,7 @@ class DocumentResource extends Resource
         ->striped()
         ->filtersLayout(FiltersLayout::AboveContent)
         ->searchPlaceholder('Buscar por nombre o descripción')
+        ->openRecordUrlInNewTab()
         ->columns([
             Tables\Columns\TextColumn::make('anio')
                 ->searchable()
@@ -90,7 +93,10 @@ class DocumentResource extends Resource
             Tables\Columns\SpatieTagsColumn::make('tags')
                 ->label('Etiquetas'),
         ])
-
+        ->contentGrid([
+            'md' => 2,
+            'xl' => 3,
+        ])
         ->filters([
             // Filtro por Tipo (SelectFilter)
                         /* Filter::make('anio')
@@ -147,8 +153,31 @@ class DocumentResource extends Resource
                 ->relationship('tags', 'name')
                 ->searchable()
                 ->preload()->multiple(),
-            ]);
+            ])
+
+        ->actions([
+                //Tables\Actions\Action::make('url')
+                Tables\Actions\ViewAction::make()
+                ->label('Ver detalles')
+                    ->icon('heroicon-o-eye')
+                    ->url(fn ($record) => $record->archivo_pdf ? Storage::url($record->archivo_pdf) : null)
+                    ->openUrlInNewTab(),
+        ]);
+
+
     }
+
+
+   /* public function getTableActions(): array
+    {
+        return [
+            Action::make('view')
+                ->label('Ver detalles')
+                ->icon('heroicon-o-eye')
+                ->url(fn ($record) => $record->archivo_pdf ? Storage::url($record->archivo_pdf) : null)
+                ->openUrlInNewTab(),
+        ];
+    } */
 
     public static function getRelations(): array
     {

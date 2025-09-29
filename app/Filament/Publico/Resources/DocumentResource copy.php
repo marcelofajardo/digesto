@@ -17,6 +17,17 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Columns\IconColumn;
 use Illuminate\Support\Facades\Storage;
 
+use App\Models\Category;
+use App\Models\Type;
+use App\Models\Department;
+use App\Models\User;
+use Filament\Tables\Actions;
+
+use Filament\Tables\Enums\FiltersLayout;
+
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\TextInput;
+
 
 class DocumentResource extends Resource
 {
@@ -36,87 +47,132 @@ class DocumentResource extends Resource
 
    public static function table(Table $table): Table
     {
-        return $table
+    return $table
         ->striped()
-            ->columns([
-                Tables\Columns\TextColumn::make('anio')
-                    ->searchable()
-                    ->label('Año')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('numero')
-                    ->sortable()
-                    ->searchable()
-                    ->label('Número'),
-                Tables\Columns\TextColumn::make('titulo')
-                    ->searchable()
-                    ->label('Título'),
-                Tables\Columns\TextColumn::make('descripcion')
-                    ->searchable()
-                    ->wrap() // 👈 permite salto de línea
-                    ->label('Descripción'),              
-                TextColumn::make('archivo_pdf')
-                    ->searchable()
-                    ->toggleable(false)   // evita que el usuario la muestre/oculte
-                    ->visible(false),     // no se muestra en la tabla pero sigue en la consulta
-
-                // 2) IconColumn para mostrar el icono PDF clickeable
-                IconColumn::make('archivo_pdf_icon') // nombre de columna arbitrario porque usamos getStateUsing
-                    ->label('Documento')
-                    ->getStateUsing(fn ($record) => filled($record->archivo_pdf)) // true si hay archivo
-                    ->trueIcon('heroicon-o-document') // icono cuando hay archivo
-                    ->falseIcon(null)              // nada si no hay archivo
-                    ->color('danger')              // color rojo
-                    ->url(fn ($record) => $record->archivo_pdf ? Storage::url($record->archivo_pdf) : null)
-                    ->openUrlInNewTab(),           // abrir en nueva pestaña
-                Tables\Columns\TextColumn::make('type.nombre')
+        ->filtersLayout(FiltersLayout::AboveContent)
+        ->searchPlaceholder('Buscar por nombre o descripción')
+        ->openRecordUrlInNewTab()
+        ->columns([
+            Tables\Columns\TextColumn::make('anio')
+                ->searchable()
+                ->label('Año')
+                ->sortable(),
+            Tables\Columns\TextColumn::make('numero')
+                ->sortable()
+                ->searchable()
+                ->label('Número'),
+            Tables\Columns\TextColumn::make('titulo')
+                ->searchable()
+                ->label('Título'),
+            Tables\Columns\TextColumn::make('descripcion')
+                ->searchable()
+                ->wrap()
+                ->label('Descripción'),
+            TextColumn::make('archivo_pdf')
+                ->searchable()
+                ->toggleable(false)
+                ->visible(false),
+            IconColumn::make('archivo_pdf_icon')
+                ->label('Documento')
+                ->getStateUsing(fn ($record) => filled($record->archivo_pdf))
+                ->trueIcon('heroicon-o-document')
+                ->falseIcon(null)
+                ->color('danger')
+                ->url(fn ($record) => $record->archivo_pdf ? Storage::url($record->archivo_pdf) : null)
+                ->openUrlInNewTab(),
+            Tables\Columns\TextColumn::make('type.nombre')
                 ->sortable()
                 ->label('Tipo'),
-                Tables\Columns\TextColumn::make('category.nombre')
-                ->sortable()->label('Escuela'),
-               /*  Tables\Columns\TextColumn::make('user.name')
-                    ->label('Usuario')
-                    ->sortable(), */
-                Tables\Columns\TextColumn::make('department.nombre')
-                    ->label('Departamento'),
-                Tables\Columns\SpatieTagsColumn::make('tags')
-
-               
+            Tables\Columns\TextColumn::make('category.nombre')
+                ->sortable()
+                ->label('Escuela'),
+            Tables\Columns\TextColumn::make('department.nombre')
+                ->label('Departamento'),
+            Tables\Columns\SpatieTagsColumn::make('tags')
                 ->label('Etiquetas'),
-                
-            ])
-             ->defaultSort(function (Builder $query): Builder {
-                return $query
-                    ->orderBy('anio','desc')
-                    ->orderBy('numero','desc');
-            })
-            ->filters([
-                /* Filter::make('Año')
-                    ->form([
-                        Forms\Components\TextInput::make('anio')
-                            ->numeric()
-                            ->minValue(2008)
-                            ->maxValue(2045)
-                            ->default(date('Y'))
-                            ->placeholder('Año')
-                    ])
-                    ->query(fn (Builder $query, array $data): Builder => $query->where('anio', $data['anio'] ?? date('Y'))),
- */
+        ])
+
+        ->filters([
+            // Filtro por Tipo (SelectFilter)
+                        /* Filter::make('anio')
+                ->label('Filtrar por Año')
+                ->form([
+                    TextInput::make('anio')
+                        ->placeholder('Ej: 2024')
+                        ->integer()
+                        ->debounce(500), // Retraso para evitar consultas constantes
+                ])
+
+                ->query(function (Builder $query, array $data): Builder {
+                    return $query->when(
+                        $data['anio'],
+                        fn (Builder $query, $anio): Builder => $query->where('anio', $anio)
+                    );
+                }), */
+             SelectFilter::make('anio')
+                ->label('Año')
+                ->multiple() // permite seleccionar varios
+                ->options(function () {
+                    // Trae los años existentes en la tabla
+                    return \App\Models\Document::query()
+                        ->select('anio')
+                        ->distinct()
+                        ->orderBy('anio', 'desc')
+                        ->pluck('anio', 'anio')
+                        ->toArray();
+                }),
+            SelectFilter::make('type_id')
+                ->label('Filtrar por Tipo')
+                ->options(
+                    Type::all()->pluck('nombre', 'id')->toArray()
+                )
+                ->placeholder('Selecciona un tipo')
+                ->attribute('type_id'),
+
+            // Filtro por Escuela (SelectFilter)
+            SelectFilter::make('category_id')
+                ->label('Filtrar por Escuela')
+                ->options(
+                    Category::all()->pluck('nombre', 'id')->toArray()
+                )
+                ->placeholder('Selecciona una escuela')
+                ->attribute('category_id'),
+            SelectFilter::make('department_id')
+                ->label('Filtrar por Departamento')
+                ->options(
+                    Department::all()->pluck('nombre', 'id')->toArray()
+                )
+                ->placeholder('Selecciona un departamento')
+                ->attribute('department_id'),
             SelectFilter::make('tags')
                 ->relationship('tags', 'name')
                 ->searchable()
-                ->preload()->multiple()
+                ->preload()->multiple(),
             ])
-            ->actions([
-                //Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                /* Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]), */
-            ]);
+
+        ->actions([
+                //Tables\Actions\Action::make('url')
+                Tables\Actions\ViewAction::make()
+                ->label('Ver detalles')
+                    ->icon('heroicon-o-eye')
+                    ->url(fn ($record) => $record->archivo_pdf ? Storage::url($record->archivo_pdf) : null)
+                    ->openUrlInNewTab(),
+        ]);
+
+
     }
+
+
+   /* public function getTableActions(): array
+    {
+        return [
+            Action::make('view')
+                ->label('Ver detalles')
+                ->icon('heroicon-o-eye')
+                ->url(fn ($record) => $record->archivo_pdf ? Storage::url($record->archivo_pdf) : null)
+                ->openUrlInNewTab(),
+        ];
+    } */
 
     public static function getRelations(): array
     {
@@ -129,8 +185,7 @@ class DocumentResource extends Resource
     {
         return [
             'index' => Pages\ListDocuments::route('/'),
-           /*  'create' => Pages\CreateDocument::route('/create'),
-            'edit' => Pages\EditDocument::route('/{record}/edit'), */
+
         ];
     }
 }
