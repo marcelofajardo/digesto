@@ -35,6 +35,9 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('3rem')
 
             ->favicon(asset('images/favicon-unvime.webp'))
+
+
+
             //->brandLogo(asset('images/logo.svg'))
             ->sidebarCollapsibleOnDesktop()
             ->sidebarWidth('15rem')
