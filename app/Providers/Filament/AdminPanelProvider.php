@@ -31,6 +31,10 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Blue,
             ])
             ->brandName('Digesto UNViMe')
+            ->brandLogo(asset('images/logo-transparente.png'))
+            ->brandLogoHeight('3rem')
+
+            ->favicon(asset('images/favicon-unvime.webp'))
             //->brandLogo(asset('images/logo.svg'))
             ->sidebarCollapsibleOnDesktop()
             ->sidebarWidth('15rem')

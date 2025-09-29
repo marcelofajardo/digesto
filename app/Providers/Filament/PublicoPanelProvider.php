@@ -18,6 +18,9 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
+use Filament\Support\Enums\MaxWidth;
+use Monolog\Processor\WebProcessor;
+
 class PublicoPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -27,6 +30,13 @@ class PublicoPanelProvider extends PanelProvider
             ->navigation(false) // 🔥 desactiva el sidebar completo
             ->breadcrumbs(false) // 🔥 oculta breadcrumbs en todo el panel
             ->path('')
+            ->maxContentWidth(MaxWidth::Full)
+            //->brandLogo(asset('images/LOGOTIPO-UNViMe-COLOR.webp'))
+            ->brandLogo(asset('images/logo-transparente3.png'))
+            ->brandLogoHeight('4rem')
+
+            ->favicon(asset('images/favicon-unvime.png'))
+
             //->login()
             ->colors([
                 'primary' => Color::Amber,

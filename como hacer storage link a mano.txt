@@ -1,0 +1,4 @@
+/home/u532258295/domains/vimelug.esy.es
+
+ln -s /home/u532258295/domains/vimelug.esy.es/storage/app/public /home/u532258295/domains/vimelug.esy.es/public_html/public/storage
+
