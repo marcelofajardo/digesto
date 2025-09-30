@@ -32,7 +32,7 @@ class PublicoPanelProvider extends PanelProvider
             ->path('')
             ->maxContentWidth(MaxWidth::Full)
             //->brandLogo(asset('images/LOGOTIPO-UNViMe-COLOR.webp'))
-            ->brandLogo(asset('images/logo-transparente3.png'))
+            ->brandLogo(asset('images/logo-transparente2.png'))
             ->brandLogoHeight('4rem')
 
             ->favicon(asset('images/favicon-unvime.png'))

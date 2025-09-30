@@ -3,8 +3,9 @@
 namespace App\Filament\Publico\Resources\DocumentResource\Pages;
 
 use App\Filament\Publico\Resources\DocumentResource;
-use Filament\Actions;
+//use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Contracts\View\View;
 
 class ListDocuments extends ListRecords
 {
@@ -19,6 +20,10 @@ class ListDocuments extends ListRecords
     }
     public function getTitle(): string
     {
-        return 'Documentos';
+        return 'Digesto Institucional';
+    }
+    public function getHeader(): ?View
+    {
+        return view('filament.custom-header');
     }
 }
