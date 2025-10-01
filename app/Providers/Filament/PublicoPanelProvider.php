@@ -7,6 +7,7 @@ use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
+use Filament\Pages\Page;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -41,6 +42,13 @@ class PublicoPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            /* ->headerActions([
+            // Aquí agregamos un botón personalizado
+            \Filament\Widgets\Button::make('Descargar PDF')
+                ->url(Storage::url('public/10.pdf'))
+                ->openUrlInNewTab()
+                ->color('primary'),
+            ]) */
             ->brandName('Digesto UNViMe')
             ->discoverResources(in: app_path('Filament/Publico/Resources'), for: 'App\\Filament\\Publico\\Resources')
             ->discoverPages(in: app_path('Filament/Publico/Pages'), for: 'App\\Filament\\Publico\\Pages')
