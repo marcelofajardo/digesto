@@ -90,6 +90,7 @@ class DocumentResource extends Resource
                         Forms\Components\Select::make('category_id')
                             ->relationship('category', 'Nombre')
                             ->required(true)
+                            ->label('Escuela')
                             ->placeholder('Categoría')->columnSpan(3),
                         Forms\Components\Select::make('department_id')
                             ->relationship('department', 'Nombre')
